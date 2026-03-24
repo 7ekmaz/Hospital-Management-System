@@ -40,6 +40,34 @@ private:
 public:
     Patient(int pid, string n, int a, string c);
 
+    // Getter methods
+    int getAge() const // Needed in Hospital Class
+    {
+        return age;
+    }
+
+    string getContact() const // Needed in Hospital Class
+    {
+        return contact;
+    }
+
+    string getRoomTypeName() const // Needed in Hospital Class
+    {
+        switch (roomType)
+        {
+        case GENERAL_WARD:
+            return "General Ward";
+        case ICU:
+            return "Intensive Care Unit (ICU)";
+        case PRIVATE_ROOM:
+            return "Private Room";
+        case SEMI_PRIVATE:
+            return "Semi-Private Room";
+        default:
+            return "Unknown";
+        }
+    }
+
     void admitPatient(RoomType type);
     void dischargePatient();
     void addMedicalRecord(string record);
@@ -70,6 +98,10 @@ public:
     int getId();
     string getName();
     string getDepartment();
+    int getAppointmentCount() const // Needed in Hospital Class
+    {
+        return appointmentQueue.size();
+    }
 };
 
 // ========== HOSPITAL CLASS ========== //
@@ -214,16 +246,16 @@ public:
         {
             if (patients[i].getId() == patientId)
             {
-                cout << "=== Patient Information ===" << endl;
-                cout << "ID: " << patients[i].getId() << endl;
-                cout << "Name: " << patients[i].getName() << endl;
-                // TODO cout << "Age: " << patients[i].getAge() << endl; // when getAge is been added
-                // TODO << "Contact: " << patients[i].getContact() << endl; // when getContact is been added
-                cout << "Admission Status: "
+                cout << "=== Patient Information ===" << endl
+                     << "ID: " << patients[i].getId() << endl
+                     << "Name: " << patients[i].getName() << endl
+                     << "Age: " << patients[i].getAge() << endl
+                     << "Contact: " << patients[i].getContact() << endl
+                     << "Admission Status: "
                      << (patients[i].getAdmissionStatus() ? "Admitted" : "Not Admitted") << endl;
                 if (patients[i].getAdmissionStatus())
                 {
-                    // TODO cout << "Room Type: " << patients[i].getRoomTypeName() << endl;  // when getRoomTypeName is been added
+                    cout << "Room Type: " << patients[i].getRoomTypeName() << endl;
                 }
                 cout << "==========================" << endl;
                 return;
@@ -244,7 +276,7 @@ public:
                 cout << "Name: " << doctors[i].getName() << endl;
                 cout << "Department: " << doctors[i].getDepartment() << endl;
                 cout << "Pending Appointments: "
-                     // TODO << doctors[i].getAppointmentCount() // when getAppointmentCount is been added
+                     << doctors[i].getAppointmentCount()
                      << endl;
                 cout
                     << "==========================" << endl;
