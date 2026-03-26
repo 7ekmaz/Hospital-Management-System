@@ -78,7 +78,7 @@ public:
     void admitPatient(RoomType type){
         if(isAdmitted){
             cout<<"Patient["<<name<<"] is already admitted";
-            return; 
+            return;
         }
         else{
             isAdmitted = true;
@@ -401,67 +401,175 @@ public:
     }
 };
 
+
+
+//function to convert input to enum value
+Department getDepartmentFromInput(int choice) {
+    switch(choice) {
+        case 1: return CARDIOLOGY;
+        case 2: return NEUROLOGY;
+        case 3: return ORTHOPEDICS;
+        case 4: return PEDIATRICS;
+        case 5: return EMERGENCY;
+        case 6: return GENERAL;
+        default:
+            cout << "Invalid choice, defaulting to GENERAL.\n";
+        return GENERAL;
+    }
+}
+
+
+//function to convert input to enum value
+RoomType getRoomTypeFromInput(int choice) {
+    switch(choice) {
+        case 1: return GENERAL_WARD;
+        case 2: return ICU;
+        case 3: return PRIVATE_ROOM;
+        case 4: return SEMI_PRIVATE;
+        default:
+            cout << "Invalid choice, defaulting to GENERAL_WARD.\n";
+        return GENERAL_WARD;
+    }
+}
+
+
+
 // ========== MAIN PROGRAM ========== //
-int main()
-{
+int main() {
     Hospital hospital;
+    bool run=true;
+    while (run) {
+        int choice;
+        cout<<endl;
+        cout<< "1.Register new patient" << endl;
+        cout<< "2.Add new doctor" << endl;
+        cout<< "3.Admit Patient" << endl;
+        cout<< "4.Booking appointment" << endl;
+        cout<< "5.Display PatientInfo" << endl;
+        cout<< "6.Display Doctor info" << endl;
+        cout<< "7.Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        if(choice==1) {
+            string patientName,contact;
+            cout << "Please enter patient name: ";
+            cin >> patientName;
+            int patientAge;
+            cout << "Please enter patient age: ";
+            cin >> patientAge;
+            cout << "Please enter patient contact: ";
+            cin >> contact;
+
+            hospital.registerPatient(patientName, patientAge, contact);
+        }
+        else if(choice==2) {
+            int option;
+            string doctorName;
+            cout << "Please enter doctor name: ";
+            cin >> doctorName;
+            cout << "Select department:\n";
+            cout << "1. Cardiology\n2. Neurology\n3. Orthopedics\n4. Pediatrics\n5. Emergency\n6. General\n";
+            cin >> option;
+            hospital.addDoctor(doctorName,getDepartmentFromInput(choice));
+        }
+        else if(choice==3) {
+            int id;
+            int option;
+            cout<< "Please enter patient id: ";
+            cin >> id;
+            cout << "Select room type:\n";
+            cout << "1. General Ward\n2. ICU\n3. Private Room\n4. Semi-Private\n";
+            cin >> option;
+            hospital.bookAppointment(id,getRoomTypeFromInput(option));
+
+
+        }
+        else if(choice==4) {
+            int id1,id2;
+            cout << "Please enter doctor id: ";
+            cin >> id1;
+            cout << "Please enter patient id: ";
+            cin >> id2;
+            hospital.bookAppointment(id1,id2);
+
+        }
+        else if(choice==5) {
+            int id;
+            cout << "Please enter patient id: ";
+            cin >> id;
+            hospital.displayPatientInfo(id);
+        }
+        else if(choice==6) {
+            int id;
+            cout << "Please enter doctor id: ";
+            cin >> id;
+            hospital.displayDoctorInfo(id);
+        }
+        else if (choice==7) {
+            run=false;
+        }
+
+
+    }
+}
+
 
     // Test Case 1: Registering patients
-    int p1 = hospital.registerPatient("John Doe", 35, "555-1234");
-    int p2 = hospital.registerPatient("Jane Smith", 28, "555-5678");
-    int p3 = hospital.registerPatient("Mike Johnson", 45, "555-9012");
-
-    // Test Case 2: Adding doctors
-    int d1 = hospital.addDoctor("Dr. Smith", CARDIOLOGY);
-    int d2 = hospital.addDoctor("Dr. Brown", NEUROLOGY);
-    int d3 = hospital.addDoctor("Dr. Lee", PEDIATRICS);
+    // int p1 = hospital.registerPatient("John Doe", 35, "555-1234");
+    // int p2 = hospital.registerPatient("Jane Smith", 28, "555-5678");
+    // int p3 = hospital.registerPatient("Mike Johnson", 45, "555-9012");
+    //
+    // // Test Case 2: Adding doctors
+    // int d1 = hospital.addDoctor("Dr. Smith", CARDIOLOGY);
+    // int d2 = hospital.addDoctor("Dr. Brown", NEUROLOGY);
+    // int d3 = hospital.addDoctor("Dr. Lee", PEDIATRICS);
 
     // Test Case 3: Admitting patients
-    hospital.admitPatient(p1, PRIVATE_ROOM);
-    hospital.admitPatient(p2, ICU);
-    // Try admitting already admitted patient
-    hospital.admitPatient(p1, SEMI_PRIVATE);
+    // hospital.admitPatient(p1, PRIVATE_ROOM);
+    // hospital.admitPatient(p2, ICU);
+    // // Try admitting already admitted patient
+    // hospital.admitPatient(p1, SEMI_PRIVATE);
+    //
+    // // Test Case 4: Booking appointments
+    // hospital.bookAppointment(d1, p1);
+    // hospital.bookAppointment(d1, p2);
+    // hospital.bookAppointment(d2, p3);
+    // // Try booking with invalid doctor/patient
+    // hospital.bookAppointment(999, p1); // Invalid doctor
+    // hospital.bookAppointment(d1, 999); // Invalid patient
+    //
+    // // Test Case 5: Handling medical tests
+    // // These would normally be called on Patient objects
+    // // In a real implementation, we'd need a way to access patients
+    //
+    // // Test Case 6: Emergency cases
+    // hospital.addEmergency(p3);
+    // hospital.addEmergency(p1);
+    // int emergencyPatient = hospital.handleEmergency();
+    // emergencyPatient = hospital.handleEmergency();
+    // emergencyPatient = hospital.handleEmergency(); // No more emergencies
+    //
+    // // Test Case 7: Discharging patients
+    // // Would normally call dischargePatient() on Patient objects
+    //
+    // // Test Case 8: Displaying information
+    // hospital.displayPatientInfo(p1);
+    // hospital.displayPatientInfo(p2);
+    // hospital.displayPatientInfo(999); // Invalid patient
+    //
+    // hospital.displayDoctorInfo(d1);
+    // hospital.displayDoctorInfo(d2);
+    // hospital.displayDoctorInfo(999); // Invalid doctor
+    //
+    // // Test Case 9: Doctor seeing patients
+    // // These would normally be called on Doctor objects
+    // // In a real implementation, we'd need a way to access doctors
+    //
+    // // Test Case 10: Edge cases
+    // Hospital emptyHospital;
+    // emptyHospital.displayPatientInfo(1); // No patients
+    // emptyHospital.displayDoctorInfo(1);  // No doctors
+    // emptyHospital.handleEmergency();     // No emergencies
 
-    // Test Case 4: Booking appointments
-    hospital.bookAppointment(d1, p1);
-    hospital.bookAppointment(d1, p2);
-    hospital.bookAppointment(d2, p3);
-    // Try booking with invalid doctor/patient
-    hospital.bookAppointment(999, p1); // Invalid doctor
-    hospital.bookAppointment(d1, 999); // Invalid patient
-
-    // Test Case 5: Handling medical tests
-    // These would normally be called on Patient objects
-    // In a real implementation, we'd need a way to access patients
-
-    // Test Case 6: Emergency cases
-    hospital.addEmergency(p3);
-    hospital.addEmergency(p1);
-    int emergencyPatient = hospital.handleEmergency();
-    emergencyPatient = hospital.handleEmergency();
-    emergencyPatient = hospital.handleEmergency(); // No more emergencies
-
-    // Test Case 7: Discharging patients
-    // Would normally call dischargePatient() on Patient objects
-
-    // Test Case 8: Displaying information
-    hospital.displayPatientInfo(p1);
-    hospital.displayPatientInfo(p2);
-    hospital.displayPatientInfo(999); // Invalid patient
-
-    hospital.displayDoctorInfo(d1);
-    hospital.displayDoctorInfo(d2);
-    hospital.displayDoctorInfo(999); // Invalid doctor
-
-    // Test Case 9: Doctor seeing patients
-    // These would normally be called on Doctor objects
-    // In a real implementation, we'd need a way to access doctors
-
-    // Test Case 10: Edge cases
-    Hospital emptyHospital;
-    emptyHospital.displayPatientInfo(1); // No patients
-    emptyHospital.displayDoctorInfo(1);  // No doctors
-    emptyHospital.handleEmergency();     // No emergencies
-
-    return 0;
-}
+//     return 0;
+// }
