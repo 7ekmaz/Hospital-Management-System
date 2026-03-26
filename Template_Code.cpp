@@ -155,14 +155,62 @@ private:
     queue<int> appointmentQueue;
 
 public:
-    Doctor(int did, string n, Department d);
+    // Constructor
+    Doctor(int did, string n, Department d) {
+        this->id = did;
+        this->name = n;
+        this->department = d;
+    }
 
-    void addAppointment(int patientId);
-    int seePatient();
+    // Adds a patient ID to the appointment queue (FIFO)
+    void addAppointment(int patientId) {
+        appointmentQueue.push(patientId);
+        // Note: Expected output from test cases assumes the name already includes "Dr." 
+        cout << "Appointment added for patient " << patientId << " with " << name << endl;
+    }
 
-    int getId();
-    string getName();
-    string getDepartment();
+    // Processes the next patient in the queue
+    int seePatient() {
+        if (appointmentQueue.empty()) {
+            cout << "No appointments for " << name << "." << endl;
+            return -1;
+        } else {
+            int patientId = appointmentQueue.front();
+            appointmentQueue.pop();
+            cout << name << " is seeing patient " << patientId << endl;
+            return patientId;
+        }
+    }
+
+    // Getters
+    int getId() {
+        return id;
+    }
+
+    string getName() {
+        return name;
+    }
+
+    // Converts the enum to a human-readable string
+    string getDepartment() {
+        switch (department) {
+            case CARDIOLOGY:
+                return "Cardiology";
+            case NEUROLOGY:
+                return "Neurology";
+            case ORTHOPEDICS:
+                return "Orthopedics";
+            case PEDIATRICS:
+                return "Pediatrics";
+            case EMERGENCY:
+                return "Emergency";
+            case GENERAL:
+                return "General Practice";
+            default:
+                return "Unknown";
+        }
+    }
+
     int getAppointmentCount() const // Needed in Hospital Class
     {
         return appointmentQueue.size();
